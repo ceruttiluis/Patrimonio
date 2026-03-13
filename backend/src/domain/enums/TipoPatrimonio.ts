@@ -1,0 +1,5 @@
+export enum TipoPatrimonio {
+  ROCADEIRA = 'ROCADEIRA',
+  LAVADORA = 'LAVADORA',
+  CARRINHO_LIMPEZA = 'CARRINHO_LIMPEZA'
+}

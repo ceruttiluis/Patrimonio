@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>Novo Patrimônio</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()">
+
+  <mat-dialog-content class="space-y-4">
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Número</mat-label>
+      <input matInput formControlName="numero" (input)="formatarCampo('numero')" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="descricao" (input)="formatarCampo('descricao')" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Tipo</mat-label>
+
+      <mat-select formControlName="tipo">
+        <mat-option value="ROCADEIRA">ROCADEIRA</mat-option>
+        <mat-option value="LAVADORA">LAVADORA</mat-option>
+        <mat-option value="ENCERADEIRA">ENCERADEIRA</mat-option>
+        <mat-option value="CARRINHO DE LIMPEZA">CARRINHO DE LIMPEZA</mat-option>
+      </mat-select>
+
+
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Departamento</mat-label>
+
+      <mat-select formControlName="departamentoId">
+        <mat-option value="1">1</mat-option>
+        <mat-option value="2">2</mat-option>
+        <mat-option value="3">3</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Filial</mat-label>
+
+      <mat-select formControlName="filialId">
+        <mat-option value="1">1</mat-option>
+        <mat-option value="2">2</mat-option>
+        <mat-option value="3">3</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Status</mat-label>
+
+      <mat-select formControlName="status">
+        <mat-option value="ATIVO">Ativo</mat-option>
+        <mat-option value="MANUTENCAO">Manutenção</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+
+    <button mat-button mat-dialog-close>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      Salvar
+    </button>
+
+  </mat-dialog-actions>
+
+</form>

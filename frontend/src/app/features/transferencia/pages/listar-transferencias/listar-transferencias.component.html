@@ -1,0 +1,63 @@
+<div class="p-6">
+
+  <div class="flex justify-between items-center mb-6">
+
+    <h1 class="text-2xl font-semibold">
+      Transferências de Patrimônio
+    </h1>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="novaTransferencia()">
+
+      <mat-icon>add</mat-icon>
+      Nova Transferência
+
+    </button>
+
+  </div>
+
+  <table mat-table [dataSource]="transferencias" class="w-full">
+
+  <ng-container matColumnDef="patrimonio">
+    <th mat-header-cell *matHeaderCellDef>Nº Patrimônio</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.patrimonioNumero}}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="departamento_origem">
+    <th mat-header-cell *matHeaderCellDef>Departamento Origem</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.departamentoOrigem?.nomeDepartamento }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="departamento_destino">
+    <th mat-header-cell *matHeaderCellDef>Departamento Destino</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.departamentoDestino?.nomeDepartamento }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="filial_destino">
+    <th mat-header-cell *matHeaderCellDef>Filial Destino</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.filialDestino?.nome }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="data">
+    <th mat-header-cell *matHeaderCellDef>Data</th>
+    <td mat-cell *matCellDef="let t">
+      {{ t.dataTransferencia | date:'dd/MM/yyyy' }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+</table>
+
+</div>

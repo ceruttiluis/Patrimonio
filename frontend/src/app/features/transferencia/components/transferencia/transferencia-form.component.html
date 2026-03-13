@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Nova Transferência</h2>
+
+<form [formGroup]="form" (ngSubmit)="salvar()" class="p-4 space-y-4">
+
+  <!-- Patrimonio -->
+  <mat-form-field class="w-full">
+
+    <mat-label>Patrimônio</mat-label>
+
+    <mat-select formControlName="patrimonioId">
+
+      <mat-option *ngFor="let p of patrimonios" [value]="p.id">
+        {{p.numero}} - {{p.descricao}}
+      </mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+  <!-- Departamento -->
+  <mat-form-field class="w-full">
+
+    <mat-label>Departamento destino</mat-label>
+
+    <mat-select formControlName="departamentoDestino" (selectionChange)="onDepartamentoChange($event.value)">
+
+      <mat-option *ngFor="let d of departamentos" [value]="d">
+        {{ d.nome }}
+      </mat-option>
+
+    </mat-select>
+
+  </mat-form-field>
+
+  <!-- Filial -->
+  <mat-form-field class="w-full">
+
+    <mat-label>Filial destino</mat-label>
+
+    <input matInput formControlName="filialNome" readonly>
+
+  </mat-form-field>
+
+  <!-- Observações -->
+  <mat-form-field class="w-full">
+
+    <mat-label>Observações</mat-label>
+
+    <textarea matInput formControlName="observacoes"></textarea>
+
+  </mat-form-field>
+
+  <div class="flex justify-end gap-3">
+
+    <button mat-button mat-dialog-close>
+      Cancelar
+    </button>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      Transferir
+    </button>
+
+  </div>
+
+</form>
