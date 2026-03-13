@@ -2,25 +2,23 @@ import { PatrimonioRepository } from '../../domain/repositories/PatrimonioReposi
 import { TransferenciaRepository } from '../../domain/repositories/TransferenciaRepository';
 import { StatusPatrimonio } from '../../domain/enums/StatusPatrimonio';
 import { Transferencia } from '../../domain/entities/transferencia';
-import { Departamento } from '../../domain/entities/Departamento';
 import { Patrimonio } from '../../domain/entities/patrimonio';
-import { Filial } from '../../domain/entities/Filial';
 
 interface TransferirPatrimonioInput {
   patrimonioId: number;
-  departamentoDestino: Departamento;
+  departamentoDestinoId: number;
   observacao?: string;
-  filialOrigem: Filial;
-  filialDestino: Filial;
 }
 
 export class TransferirPatrimonioUseCase {
   constructor(
     private readonly patrimonioRepository: PatrimonioRepository,
-    private readonly transferenciaRepository: TransferenciaRepository
+    private readonly transferenciaRepository: TransferenciaRepository,
+    private readonly departamentoRepository: any,
   ) {}
 
   async executar(input: TransferirPatrimonioInput): Promise<Patrimonio> {
+
     const patrimonio = await this.patrimonioRepository.buscarPorId(input.patrimonioId);
 
     if (!patrimonio) {
@@ -32,24 +30,33 @@ export class TransferirPatrimonioUseCase {
     }
 
     const departamentoOrigem = patrimonio.departamentoAtual;
+    const filialOrigem = patrimonio.filialAtual;
+
+    const departamentoDestino =
+      await this.departamentoRepository.buscarPorId(input.departamentoDestinoId);
+
+      if (!departamentoDestino) {
+      throw new Error('Departamento destino não encontrado');
+    }
+
+    const filialDestino = departamentoDestino.filial;
     
-    patrimonio.alterarDepartamento(input.departamentoDestino);
+    patrimonio.alterarDepartamento(departamentoDestino);
+    patrimonio.alterarFilial(filialDestino);
     patrimonio.alterarStatus(StatusPatrimonio.TRANSFERIDO);
 
     const transferencia = new Transferencia(
       0,
-      patrimonio.numero,
     patrimonio.id,
     departamentoOrigem,
-    input.departamentoDestino,
-    input.filialOrigem, 
-    input.filialDestino,
+    departamentoDestino,
+    filialOrigem, 
+    filialDestino,
     new Date(),
     input.observacao
     );
 
     await this.transferenciaRepository.salvar(transferencia);
-    await this.patrimonioRepository.atualizar(patrimonio);
 
     return patrimonio;
   }

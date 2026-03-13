@@ -11,7 +11,7 @@ export class Patrimonio {
     public _status: StatusPatrimonio,
     public tipo: TipoPatrimonio,
     public _departamentoAtual: Departamento,
-    readonly filialAtual: Filial,
+    public filialAtual: Filial,
     readonly dataBaixa?: Date
   ) {}
 
@@ -30,6 +30,10 @@ export class Patrimonio {
   alterarDepartamento(novoDepartamento: Departamento): void {
     this._departamentoAtual = novoDepartamento;
   }
+
+  alterarFilial(novaFilial: Filial): void {
+  this.filialAtual = novaFilial;
+}
 
   static criar(
     descricao: string,

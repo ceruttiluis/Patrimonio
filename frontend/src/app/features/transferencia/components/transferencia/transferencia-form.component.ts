@@ -17,7 +17,6 @@ export class TransferenciaFormComponent implements OnInit {
 
   patrimonios: any[] = [];
   departamentos: any[] = [];
-  filiais: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -55,12 +54,6 @@ export class TransferenciaFormComponent implements OnInit {
         this.departamentos = data;
         this.cdr.detectChanges();
       });
-
-    this.filialService.listar()
-      .subscribe(data => {
-        this.filiais = data;
-        this.cdr.detectChanges();
-      });
   }
   onDepartamentoChange(departamento: any) {
 
@@ -78,16 +71,22 @@ export class TransferenciaFormComponent implements OnInit {
 
     const payload = {
       patrimonioId: this.form.value.patrimonioId,
-      departamentoDestino: this.form.value.departamentoDestino.id,
-      observacoes: this.form.value.observacoes || null
+      departamentoDestinoId: this.form.value.departamentoDestino.id,
+      observacao: this.form.value.observacoes || null
     };
 
     console.log("ENVIANDO:", payload);
 
     this.transferenciaService.transferir(payload)
       .subscribe({
-        next: () => this.dialogRef.close(true),
-        error: (err) => console.error(err)
+        next: () => {
+          console.log("Transferência realizada");
+          this.dialogRef.close(true);
+        },
+        error: (err) => {
+          console.error("ERRO API:", err);
+          console.error(err);
+        }
       });
 
   }

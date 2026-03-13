@@ -7,24 +7,19 @@ import { Filial } from '../../domain/entities/Filial';
 export class TransferenciaRepositorySupabase implements TransferenciaRepository {
 
   async salvar(transferencia: Transferencia): Promise<void> {
-    const { error } = await supabase
-      .from('transferencia')
-      .insert({
-        patrimonio_id: transferencia.patrimonioId,
 
-        departamento_origem_id: transferencia.departamentoOrigem.id,
-        filial_origem_id: transferencia.filialOrigem.id,
+  const { error } = await supabase.rpc('transferir_patrimonio', {
+    p_patrimonio_id: transferencia.patrimonioId,
+    p_departamento_origem_id: transferencia.departamentoOrigem.id,
+    p_filial_origem_id: transferencia.filialOrigem.id,
+    p_departamento_destino_id: transferencia.departamentoDestino.id,
+    p_filial_destino_id: transferencia.filialDestino.id,
+    p_observacao: transferencia.observacao
+  });
 
-        departamento_destino_id: transferencia.departamentoDestino.id,
-        filial_destino_id: transferencia.filialDestino.id,
+  if (error) throw error;
 
-        data_transferencia: transferencia.dataTransferencia,
-        observacao: transferencia.observacao
-      });
-
-    if (error) throw error;
-
-  }
+}
 
   async listar(): Promise<Transferencia[]> {
 
@@ -67,7 +62,6 @@ export class TransferenciaRepositorySupabase implements TransferenciaRepository 
     return (data as any[]).map(d =>
       new Transferencia(
         d.id,
-        d.patrimonio.numero,
         d.patrimonio.id,
 
         new Departamento(
